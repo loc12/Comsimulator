@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>2x/expand_more_black_24dp.png</file>
+        <file>port.ico</file>
+    </qresource>
+</RCC>

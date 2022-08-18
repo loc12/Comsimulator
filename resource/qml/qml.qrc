@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>CommSettingArea.qml</file>
+        <file>MessageDefArea.qml</file>
+        <file>LogViewArea.qml</file>
+        <file>Component/Button.qml</file>
+        <file>Component/ComboBox.qml</file>
+        <file>Component/ScrollBarH.qml</file>
+        <file>Component/ScrollBarV.qml</file>
+        <file>AckMessageArea.qml</file>
+    </qresource>
+</RCC>
