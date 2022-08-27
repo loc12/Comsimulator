@@ -14,20 +14,18 @@ CHandleMessageThread::~CHandleMessageThread()
 
 void CHandleMessageThread::onParserMsg()
 {
-    for(;;){
-        while(m_queueRMsg->size() >0){
-            mutex.lock();
-            if(terminationRequested){
-                break;
-            }
-            CMessage msg;
-            msg = m_queueRMsg->front();
-            m_queueRMsg->pop_back();
-            QString rstr = msg.content();
-            receiveMessage(rstr);
-            mutex.unlock();
+    mutexReceiveMsg->lock();
+    while(!m_queueRMsg->empty()){
+        if(terminationRequested){
+            break;
         }
+        CMessage msg;
+        msg = m_queueRMsg->dequeue();
+        QString rstr = msg.content();
+        emit receiveMessage(rstr);
     }
+    mutexReceiveMsg->unlock();
+
 }
 
 void CHandleMessageThread::setTerminationFlag()
@@ -44,4 +42,8 @@ void CHandleMessageThread::SetRQueueMessage(QQueue<CMessage> *queue)
 void CHandleMessageThread::SetSQueueMessage(QQueue<CMessage> *queue)
 {
     this->m_queueSMsg = queue;
+}
+void CHandleMessageThread::SetRMutexMsg(QMutex* receiveMsg)
+{
+    this->mutexReceiveMsg = receiveMsg;
 }

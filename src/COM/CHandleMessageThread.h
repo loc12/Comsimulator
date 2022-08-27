@@ -21,8 +21,10 @@ public slots:
 public:
     void SetRQueueMessage(QQueue<CMessage>* queue);
     void SetSQueueMessage(QQueue<CMessage>* queue);
+    void SetRMutexMsg( QMutex *receiveMsg);
 private:
     QMutex mutex;
+    QMutex *mutexReceiveMsg;
     bool terminationRequested;
     QQueue<CMessage>* m_queueRMsg;         // Queue of receive message
     QQueue<CMessage>* m_queueSMsg;           // Queue of send message

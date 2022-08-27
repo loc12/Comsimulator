@@ -56,7 +56,8 @@ private:
     CHandleMessageThread* handleMessage;
 public:
     CPortComSetting m_portComSetting;
-
+private:
+    QMutex ReceiveMsg;
 public slots:
     void onReceiveMessage(QString msg);
     void readData();

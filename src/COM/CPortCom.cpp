@@ -23,6 +23,7 @@ CPortCom::CPortCom(QObject *parent)
     handleMessageThread.start();
     handleMessage->SetRQueueMessage(&m_queueReceive);
     handleMessage->SetSQueueMessage(&m_queueSend);
+    handleMessage->SetRMutexMsg(&ReceiveMsg);
 }
 
 CPortCom::~CPortCom()
@@ -35,6 +36,7 @@ void CPortCom::readData()
 {
     static QString rstr;
     QByteArray rcvBuf = m_pSerialPort->readAll();
+    bool isReadData = false;
     for(int i = 0; i < rcvBuf.size(); i++){
         if((rcvBuf.at(i) >= '!' && rcvBuf.at(i) < '~') || rcvBuf.at(i) == ENDCHAR){
             if(rcvBuf.at(i) != ENDCHAR){
@@ -44,13 +46,19 @@ void CPortCom::readData()
                 int len;
                 len = rstr.size();
                 if(len > 1){
+                    ReceiveMsg.lock();
                     CMessage message("", rstr);
                     m_queueReceive.push_back(message);
-                    emit readReveiveMsg();
+                    ReceiveMsg.unlock();
                 }
                 rstr.clear();
+                isReadData = true;
             }
         }
+    }
+
+    if(isReadData){
+       emit readReveiveMsg();
     }
 }
 
